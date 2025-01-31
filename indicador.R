@@ -4,7 +4,6 @@ library(readr)
 datos <- read_csv2("datos/personal_academico_2008-2024.csv")
 sedes <- read_csv2("datos/sedes_ed_superior_2024.csv")
 
-datos
 
 # las universidades no vienen georeferenciadas
 
@@ -15,9 +14,9 @@ datos2 <- datos |>
   left_join(sedes,
             by = join_by(nombre_ies,
                          codigo_ies
-            )) |> 
-  filter(!is.na(comuna_sede)) |> 
-  relocate(comuna_sede, .after = nombre_ies)
+            ))
+  # filter(!is.na(comuna_sede)) |> 
+  # relocate(comuna_sede, .after = nombre_ies)
 
 # dividir cantidades por sedes
 datos3 <- datos2 |> 
@@ -54,15 +53,21 @@ datos3 <- datos2 |>
 #   group_by(region_sede, comuna_sede) |> 
 #   summarize(docentes = sum(valor, na.rm = T))
 
-
+# calcular indicadores
 datos4 <- datos3 |> 
+  # filtrar variables
   filter(variable %in% c("N° de JCE por Institución", "N° de académicos por insitución"),
          subvariable == "Total General") |> 
-  group_by(region_sede, comuna_sede, variable) |> 
+  # calcular suma por comunas
+  group_by(codigo_comuna, nombre_comuna, codigo_region, nombre_region, variable) |> 
   summarize(docentes = sum(valor, na.rm = T)) |> 
   ungroup() |> 
+  # poner en fos columnas
   tidyr::pivot_wider(names_from = variable, values_from = docentes) |> 
-  rename(academicos_jce = 3, academicos = 4)
+  rename(academicos_jce = last_col()-1, academicos = last_col())
 
 
 datos4
+
+# guardar ----
+readr::write_csv2(datos4, "/Users/baolea/R/subdere/indicadores/mineduc_personal_academico_comuna.csv")

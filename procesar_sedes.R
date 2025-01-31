@@ -10,23 +10,43 @@
 library(readr)
 library(dplyr)
 
-oferta <- read_csv2("datos/datos_originales/Oferta_Academica_2024_SIES_04_07_2024_WEB_EE.csv",
+# cargar sedes
+sedes <- read_csv2("datos/datos_originales/Oferta_Academica_2024_SIES_04_07_2024_WEB_EE.csv",
                     locale = locale(encoding = "latin1")) |> 
   janitor::clean_names()
 
-oferta |> glimpse()
+sedes |> glimpse()
 
-sedes <- oferta |> 
+# limpiar datos
+sedes1 <- sedes |> 
   select(nombre_ies, codigo_ies, 
          codigo_sede, nombre_sede,
          region_sede, provincia_sede, comuna_sede) |> 
   distinct() |>
   add_count(nombre_ies, name = "n_sedes")
 
-sedes |> 
-  print(n=30)
+
+
+# cargar códigos únicos territoriales
+cut_comunas <- read_csv2("datos/datos_externos/cut_comuna.csv") |> 
+  select(-abreviatura_region, -contains("provincia")) |> 
+  mutate(comuna = toupper(nombre_comuna),
+         comuna = stringr::str_replace_all(comuna, 
+                                           c("Á"="A", "É"="E", "Í"="I", "Ó"="O", "Ú"="U"))
+  )
+
+# agregar códigos únicos territoriales
+sedes2 <- sedes1 |> 
+  # corregir comunas
+  mutate(comuna_sede = recode(comuna_sede,
+                              "LA CALERA" = "CALERA")) |> 
+  left_join(cut_comunas, 
+            by = join_by(comuna_sede == comuna)) |> 
+  select(-region_sede, -provincia_sede, -comuna_sede) |> 
+  relocate(ends_with("region"), .after = nombre_sede) |> 
+  relocate(ends_with("comuna"), .after = nombre_sede)
 
 
 # guardar ----
-readr::write_csv2(sedes, "datos/sedes_ed_superior_2024.csv")
+readr::write_csv2(sedes2, "datos/sedes_ed_superior_2024.csv")
 

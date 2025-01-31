@@ -39,3 +39,15 @@ download.file(archivo,
 # download.file("https://www.mifuturo.cl/wp-content/uploads/2024/07/OFICIAL_GLOSARIO_MATRICULA_WEB_E.pdf",
 #               "datos/datos_originales/glosario.pdf")
 # No disponible
+
+
+
+# obtener sedes ----
+# Corresponde a las bases de datos de Oferta Académica, entre los años 2010 y 2024, elaboradas a partir de la información entregada por las propias instituciones de Educación Superior al Servicio de Información de Educación Superior (SIES), de Mineduc, en virtud de lo dispuesto en la Ley N° 20.129.
+# 
+# https://www.mifuturo.cl/bases-de-datos-de-oferta-academica/
+#   
+# https://www.mifuturo.cl/wp-content/uploads/2024/07/Oferta_Academica_2024_SIES_04_07_2024_WEB_EE.zip
+
+
+# sedes de instituciones de educación superios (IES) con la comuna donde se ubican
