@@ -62,12 +62,15 @@ datos4 <- datos3 |>
   group_by(codigo_comuna, nombre_comuna, codigo_region, nombre_region, variable) |> 
   summarize(docentes = sum(valor, na.rm = T)) |> 
   ungroup() |> 
-  # poner en fos columnas
+  # poner en dos columnas
   tidyr::pivot_wider(names_from = variable, values_from = docentes) |> 
   rename(academicos_jce = last_col()-1, academicos = last_col())
 
-
-datos4
+# cambiar tipo de variables
+datos5 <- datos4 |> 
+  mutate(codigo_comuna = as.numeric(codigo_comuna),
+         codigo_region = as.numeric(codigo_region)) |> 
+  filter(!is.na(codigo_comuna))
 
 # guardar ----
-readr::write_csv2(datos4, "/Users/baolea/R/subdere/indicadores/mineduc_personal_academico_comuna.csv")
+readr::write_csv2(datos5, "/Users/baolea/R/subdere/indice_brechas/datos/mineduc_personal_academico_comuna.csv")
