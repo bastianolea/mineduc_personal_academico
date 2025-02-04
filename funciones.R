@@ -4,6 +4,7 @@ extraer_subtabla <- function(data, columnas = 7:9,
                              tipo = "Total") {
   # data <- datos_academicos_num
   # browser()
+  
   # seleccionar las columnas de cada variable
   data_subset <- data |> 
     select(1:3, all_of(columnas))

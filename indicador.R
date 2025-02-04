@@ -59,7 +59,7 @@ datos4 <- datos3 |>
   filter(variable %in% c("N° de JCE por Institución", "N° de académicos por insitución"),
          subvariable == "Total General") |> 
   # calcular suma por comunas
-  group_by(codigo_comuna, nombre_comuna, codigo_region, nombre_region, variable) |> 
+  group_by(codigo_comuna, nombre_comuna, codigo_region, nombre_region, variable, año) |> 
   summarize(docentes = sum(valor, na.rm = T)) |> 
   ungroup() |> 
   # poner en dos columnas

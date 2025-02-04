@@ -3,6 +3,7 @@ library(dplyr)
 library(stringr)
 library(tidyr)
 library(janitor)
+library(readr)
 
 source("funciones.R")
 
@@ -11,6 +12,8 @@ source("funciones.R")
 ruta_archivo <- list.files("datos/datos_originales", full.names = T) |> 
   str_subset("PAC.*xls") |> 
   str_subset("~", negate = TRUE)
+
+.año <- str_extract(ruta_archivo, "\\d{4}")
 
 # cargar datos ----
 datos_academicos_num <- read_xlsx(ruta_archivo, sheet = 1) |> 
@@ -147,7 +150,8 @@ tablas_unidas |>
 personal_academico <- instituciones |> 
   left_join(tablas_unidas,
             by = join_by(codigo_ies, nombre_ies)) |> 
-  relocate(tipo, .before = 1)
+  relocate(tipo, .before = 1) |> 
+  mutate(año = as.numeric(.año))
 
 
 # guardar ----
