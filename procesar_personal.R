@@ -155,5 +155,5 @@ personal_academico <- instituciones |>
 
 
 # guardar ----
-readr::write_csv2(personal_academico, "datos/personal_academico_2008-2024.csv")
-writexl::write_xlsx(personal_academico, "datos/personal_academico_2008-2024.xlsx")  
+readr::write_csv2(personal_academico, "datos/mineduc_personal_academico_2008-2024.csv")
+writexl::write_xlsx(personal_academico, "datos/mineduc_personal_academico_2008-2024.xlsx")  

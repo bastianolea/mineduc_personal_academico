@@ -48,5 +48,5 @@ sedes2 <- sedes1 |>
 
 
 # guardar ----
-readr::write_csv2(sedes2, "datos/sedes_ed_superior_2024.csv")
+readr::write_csv2(sedes2, "datos/mineduc_sedes_ed_superior_2024.csv")
 
